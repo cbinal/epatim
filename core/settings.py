@@ -148,7 +148,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {
         "file": {
-            "level": "DEBUG",
+            "level": "WARNING",
             "class": "logging.FileHandler",
             "filename": BASE_DIR
             / "logs/django_error.log",  # Hata loglarını kaydedeceği dosya
@@ -157,7 +157,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["file"],
-            "level": "DEBUG",
+            "level": "WARNING",
             "propagate": True,
         },
     },
