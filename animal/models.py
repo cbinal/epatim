@@ -13,6 +13,8 @@ class Animal(models.Model):
     owner_phone = models.CharField(max_length=15, null=True, blank=True)
     owner_email = models.EmailField(null=True, blank=True)
     behavior_pattern = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="animals/")
 
     created_by = models.ForeignKey(
         User, on_delete=models.RESTRICT, related_name="created_animals_user"
@@ -22,3 +24,6 @@ class Animal(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id_number
