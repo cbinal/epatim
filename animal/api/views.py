@@ -10,9 +10,12 @@ class AnimalViewSet(ModelViewSet):
     queryset = Animal.objects.all()
     serializer_class = AnimalSerializer
     permission_classes = [IsAuthenticated]
+    print("AnimalViewSet")
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        # raise Exception("perform_create metodu çalıştı!")
+        print(self.request.user)
+        serializer.save(created_by=self.request.user, updated_by=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+        serializer.save(updated_by=self.request.user.id)
