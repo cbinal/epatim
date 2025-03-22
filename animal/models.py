@@ -3,10 +3,25 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 
 
+class AnimalSpecies(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class AnimalBreed(models.Model):
+    name = models.CharField(max_length=50)
+    species = models.ForeignKey(AnimalSpecies, on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return self.name
+
+
 class Animal(models.Model):
     id_number = models.CharField(max_length=50)
-    species = models.CharField(max_length=50)
-    breed = models.CharField(max_length=50, null=True, blank=True)
+    species = models.ForeignKey(AnimalSpecies, on_delete=models.RESTRICT)
+    breed = models.ForeignKey(AnimalBreed, on_delete=models.RESTRICT)
     age = models.IntegerField()
     arrival_date = models.DateField(default=now)
     surrender_date = models.DateField(null=True, blank=True)
