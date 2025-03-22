@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 from django.contrib.auth.models import User
 
 
@@ -7,6 +8,8 @@ class Animal(models.Model):
     species = models.CharField(max_length=50)
     breed = models.CharField(max_length=50, null=True, blank=True)
     age = models.IntegerField()
+    arrival_date = models.DateField(default=now)
+    surrender_date = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=10)
     owner = models.CharField(max_length=100, null=True, blank=True)
     owner_address = models.TextField(null=True, blank=True)
