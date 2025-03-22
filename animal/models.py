@@ -20,8 +20,12 @@ class AnimalBreed(models.Model):
 
 class Animal(models.Model):
     id_number = models.CharField(max_length=50)
-    species = models.ForeignKey(AnimalSpecies, on_delete=models.RESTRICT)
-    breed = models.ForeignKey(AnimalBreed, on_delete=models.RESTRICT)
+    species = models.ForeignKey(
+        AnimalSpecies, blank=True, null=True, on_delete=models.RESTRICT
+    )
+    breed = models.ForeignKey(
+        AnimalBreed, blank=True, null=True, on_delete=models.RESTRICT
+    )
     age = models.IntegerField()
     arrival_date = models.DateField(default=now)
     surrender_date = models.DateField(null=True, blank=True)
