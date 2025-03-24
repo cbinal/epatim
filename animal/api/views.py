@@ -38,20 +38,47 @@ class AnimalBreedViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
+# class AnimalBreedsBySpeciesViewSet(ModelViewSet):
+#     queryset = AnimalBreed.objects.all()
+#     serializer_class = AnimalBreedSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def list(self, request, *args, **kwargs):
+#         breeds = AnimalBreed.objects.values_list(
+#             "species__id", "species__name", "id", "name"
+#         )
+
+#         species_dict = defaultdict(list)
+#         for species, breed in breeds:
+#             species_dict[species].append(breed)
+
+#         formatted_data = [
+#             {"species": key, "breeds": value} for key, value in species_dict.items()
+#         ]
+
+#         return Response(formatted_data)
+
+
 class AnimalBreedsBySpeciesViewSet(ModelViewSet):
     queryset = AnimalBreed.objects.all()
     serializer_class = AnimalBreedSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
-        breeds = AnimalBreed.objects.values_list("species__name", "name")
+        all_species = AnimalSpecies.objects.values_list("id", "name")
 
-        species_dict = defaultdict(list)
-        for species, breed in breeds:
-            species_dict[species].append(breed)
+        breeds = AnimalBreed.objects.values_list(
+            "species__id", "species__name", "id", "name"
+        )
 
-        formatted_data = [
-            {"species": key, "breeds": value} for key, value in species_dict.items()
-        ]
+        species_dict = {
+            species_id: {"id": species_id, "species": species_name, "breeds": []}
+            for species_id, species_name in all_species
+        }
 
-        return Response(formatted_data)
+        for species_id, species_name, breed_id, breed_name in breeds:
+            species_dict[species_id]["breeds"].append(
+                {"id": breed_id, "name": breed_name}
+            )
+
+        return Response(list(species_dict.values()))

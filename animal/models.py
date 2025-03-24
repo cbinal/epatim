@@ -12,7 +12,7 @@ class AnimalSpecies(models.Model):
 
 class AnimalBreed(models.Model):
     name = models.CharField(max_length=50)
-    species = models.ForeignKey(AnimalSpecies, on_delete=models.RESTRICT)
+    species = models.ForeignKey(AnimalSpecies, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
