@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 from collections import defaultdict
 
@@ -35,6 +36,8 @@ class AnimalSpeciesViewSet(ModelViewSet):
 class AnimalBreedViewSet(ModelViewSet):
     queryset = AnimalBreed.objects.all()
     serializer_class = AnimalBreedSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["species", "species__name", "name"]
     permission_classes = [IsAuthenticated]
 
 
