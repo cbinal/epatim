@@ -12,8 +12,12 @@ class Warehouse(models.Model):
     default = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
 
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
-    updated_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_warehouse_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_warehouse_user"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -31,8 +35,12 @@ class Supplier(models.Model):
     tax_office = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
 
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
-    updated_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_supplier_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_supplier_user"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,8 +55,12 @@ class Medicine(models.Model):
     description = models.TextField()
     initial_quantity = models.PositiveIntegerField()
 
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
-    updated_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_medicine_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_medicine_user"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -64,15 +76,25 @@ class MedicineTransaction(models.Model):
     from_content_type = models.ForeignKey(
         ContentType, on_delete=models.RESTRICT, related_name="from_content_type"
     )
+    from_object_id = models.PositiveIntegerField()
     from_where = GenericForeignKey("from_content_type", "from_object_id")
     to_content_type = models.ForeignKey(
         ContentType, on_delete=models.RESTRICT, related_name="to_content_type"
     )
+    to_object_id = models.PositiveIntegerField()
     to_where = GenericForeignKey("to_content_type", "to_object_id")
     description = models.TextField()
 
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
-    updated_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        related_name="created_medicine_transaction_user",
+    )
+    updated_by = models.ForeignKey(
+        User,
+        on_delete=models.RESTRICT,
+        related_name="updated_medicine_transaction_user",
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
