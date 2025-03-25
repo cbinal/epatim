@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from animal.models import Animal, AnimalSpecies, AnimalBreed
+from animal.models import (
+    Animal,
+    AnimalSpecies,
+    AnimalBreed,
+    AnimalShelter,
+    AnimalTransaction,
+)
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -30,4 +36,24 @@ class AnimalBreedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AnimalBreed
+        fields = "__all__"
+
+
+class AnimalShelterSerializer(serializers.Serializer):
+    class Meta:
+        model: AnimalShelter
+        fields = "__all__"
+
+
+class AnimalTransactionSerializer(serializers.Serializer):
+    class Meta:
+        model = AnimalTransaction
+        fields = "__all__"
+
+
+class AnimalShelterListSerializer(serializers.Serializer):
+    animal = AnimalSerializer()
+
+    class Meta:
+        model = AnimalShelter
         fields = "__all__"

@@ -5,11 +5,19 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from collections import defaultdict
 
-from animal.models import Animal, AnimalBreed, AnimalSpecies
+from animal.models import (
+    Animal,
+    AnimalBreed,
+    AnimalSpecies,
+    AnimalShelter,
+    AnimalTransaction,
+)
 from animal.api.serializers import (
     AnimalSerializer,
     AnimalBreedSerializer,
     AnimalSpeciesSerializer,
+    AnimalShelterSerializer,
+    AnimalTransactionSerializer,
 )
 
 
@@ -41,27 +49,6 @@ class AnimalBreedViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-# class AnimalBreedsBySpeciesViewSet(ModelViewSet):
-#     queryset = AnimalBreed.objects.all()
-#     serializer_class = AnimalBreedSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def list(self, request, *args, **kwargs):
-#         breeds = AnimalBreed.objects.values_list(
-#             "species__id", "species__name", "id", "name"
-#         )
-
-#         species_dict = defaultdict(list)
-#         for species, breed in breeds:
-#             species_dict[species].append(breed)
-
-#         formatted_data = [
-#             {"species": key, "breeds": value} for key, value in species_dict.items()
-#         ]
-
-#         return Response(formatted_data)
-
-
 class AnimalBreedsBySpeciesViewSet(ModelViewSet):
     queryset = AnimalBreed.objects.all()
     serializer_class = AnimalBreedSerializer
@@ -85,3 +72,15 @@ class AnimalBreedsBySpeciesViewSet(ModelViewSet):
             )
 
         return Response(list(species_dict.values()))
+
+
+class AnimalShelterViewSet(ModelViewSet):
+    queryset = AnimalShelter
+    serializer_class = AnimalShelterSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class AnimalTransactionViewSet(ModelViewSet):
+    queryset = AnimalTransaction.objects.all()
+    serializer_class = AnimalTransactionSerializer
+    permission_classes = [IsAuthenticated]

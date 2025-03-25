@@ -66,3 +66,18 @@ class Animal(models.Model):
 
     def __str__(self):
         return self.id_number
+
+
+class AnimalTransaction(models.Model):
+    animal = models.ForeignKey(Animal, on_delete=models.RESTRICT, related_name="animal")
+    to_shelter = models.ForeignKey(
+        AnimalShelter, on_delete=models.RESTRICT, related_name="to_shelter"
+    )
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_animal_transaction_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_animal_transaction_user"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
