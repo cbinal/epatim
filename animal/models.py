@@ -27,7 +27,7 @@ class Animal(models.Model):
         AnimalBreed, blank=True, null=True, on_delete=models.RESTRICT
     )
     age = models.IntegerField()
-    arrival_date = models.DateField(default=now)
+    arrival_date = models.DateTimeField(default=now)
     surrender_date = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=10)
     owner = models.CharField(max_length=100, null=True, blank=True)

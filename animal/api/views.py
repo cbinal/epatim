@@ -65,7 +65,7 @@ class AnimalBreedViewSet(ModelViewSet):
 class AnimalBreedsBySpeciesViewSet(ModelViewSet):
     queryset = AnimalBreed.objects.all()
     serializer_class = AnimalBreedSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         all_species = AnimalSpecies.objects.values_list("id", "name")
