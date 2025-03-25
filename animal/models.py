@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 
+from pharmacy.models import Warehouse
+
 
 class AnimalSpecies(models.Model):
     name = models.CharField(max_length=50)
@@ -22,6 +24,12 @@ class AnimalShelter(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    warehouse = models.ForeignKey(
+        Warehouse, blank=True, null=True, on_delete=models.RESTRICT
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class Animal(models.Model):

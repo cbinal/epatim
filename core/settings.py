@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "user",
     "animal",
+    "pharmacy",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  # Burayı Production ortamında False yap
