@@ -18,6 +18,12 @@ class AnimalBreed(models.Model):
         return self.name
 
 
+class AnimalShelter(models.Model):
+    name = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+
+
 class Animal(models.Model):
     id_number = models.CharField(max_length=50)
     species = models.ForeignKey(
@@ -25,6 +31,9 @@ class Animal(models.Model):
     )
     breed = models.ForeignKey(
         AnimalBreed, blank=True, null=True, on_delete=models.RESTRICT
+    )
+    shelter = models.ForeignKey(
+        AnimalShelter, blank=True, null=True, on_delete=models.RESTRICT
     )
     age = models.IntegerField()
     arrival_date = models.DateTimeField(default=now)
