@@ -39,21 +39,21 @@ class AnimalBreedSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AnimalShelterSerializer(serializers.Serializer):
+class AnimalShelterSerializer(serializers.ModelSerializer):
     class Meta:
-        model: AnimalShelter
+        model = AnimalShelter
         fields = "__all__"
 
 
-class AnimalTransactionSerializer(serializers.Serializer):
+class AnimalTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnimalTransaction
         fields = "__all__"
 
 
-class AnimalShelterListSerializer(serializers.Serializer):
-    animal = AnimalSerializer()
+# class AnimalShelterListSerializer(serializers.ModelSerializer):
+#     animal = AnimalSerializer()
 
-    class Meta:
-        model = AnimalShelter
-        fields = "__all__"
+#     class Meta:
+#         model = AnimalShelter
+#         fields = "__all__"

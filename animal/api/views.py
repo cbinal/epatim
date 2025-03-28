@@ -27,12 +27,26 @@ class AnimalViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        species = self.request.data.get("species")
+        breed = self.request.data.get("breed")
+
         # raise Exception("perform_create metodu çalıştı!")
         print(self.request.user)
-        serializer.save(created_by=self.request.user, updated_by=self.request.user)
+        serializer.save(
+            species_id=species,
+            breed_id=breed,
+            created_by=self.request.user,
+            updated_by=self.request.user,
+        )
 
     def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user.id)
+        print("perform update")
+        serializer.save(
+            species_id=self.request.data.get("species"),
+            breed_id=self.request.data.get("breed"),
+            # owner=self.request.data.get("owner"),
+            updated_by=self.request.user,
+        )
 
 
 class AnimalSpeciesViewSet(ModelViewSet):
@@ -75,7 +89,7 @@ class AnimalBreedsBySpeciesViewSet(ModelViewSet):
 
 
 class AnimalShelterViewSet(ModelViewSet):
-    queryset = AnimalShelter
+    queryset = AnimalShelter.objects.all()
     serializer_class = AnimalShelterSerializer
     permission_classes = [IsAuthenticated]
 
