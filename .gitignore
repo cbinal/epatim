@@ -1,5 +1,6 @@
 .env
 todo
+db.sqlite3
 questions
 logs/
 staticfiles/
