@@ -51,7 +51,15 @@ class Supplier(models.Model):
 
 class Medicine(models.Model):
     name = models.CharField(max_length=100)
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.RESTRICT)
+    active_ingredient = models.CharField(
+        max_length=100, blank=True, null=True
+    )  # Etken madde
+    barcode = models.CharField(max_length=50, default="")
+    category = models.CharField(
+        max_length=100, blank=True, null=True
+    )  # Antibiyotik, Ağrı kesici
+    usage_purpose = models.TextField(blank=True, null=True)  # Kullanım amacı
+    storage_conditions = models.TextField(blank=True, null=True)  # Saklama koşulları
     description = models.TextField()
     initial_quantity = models.PositiveIntegerField()
 
@@ -73,6 +81,7 @@ class MedicineTransaction(models.Model):
     medicine = models.ForeignKey(Medicine, on_delete=models.RESTRICT)
     quantity = models.IntegerField()
     date = models.DateTimeField(default=now)
+    expiration_date = models.DateField(blank=True, null=True)  # Son kullanma tarihi
     from_content_type = models.ForeignKey(
         ContentType, on_delete=models.RESTRICT, related_name="from_content_type"
     )

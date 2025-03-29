@@ -40,9 +40,15 @@ class AnimalBreedSerializer(serializers.ModelSerializer):
 
 
 class AnimalShelterSerializer(serializers.ModelSerializer):
+    warehouse = serializers.SerializerMethodField()
+
     class Meta:
+
         model = AnimalShelter
         fields = "__all__"
+
+    def get_warehouse(self, obj):
+        return obj.warehouse.name if obj.warehouse else None
 
 
 class AnimalTransactionSerializer(serializers.ModelSerializer):
