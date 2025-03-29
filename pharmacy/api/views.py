@@ -3,11 +3,11 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 
 
-from pharmacy.models import Pharmacy
-from pharmacy.api.serializers import PharmacySerializer
+from pharmacy.models import Warehouse
+from pharmacy.api.serializers import WarehouseSerializers
 
 
-class PharmacyViewSet(ModelViewSet):
-    object = Pharmacy.objects.all()
-    serializer_class = PharmacySerializer
+class WarehouseViewSet(ModelViewSet):
+    object = Warehouse.objects.all()
+    serializer_class = WarehouseSerializers
     permission_classes = [IsAuthenticated]
