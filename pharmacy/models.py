@@ -108,13 +108,18 @@ class MedicineTransaction(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.quantity} adet {self.medicine.name}, {self.from_where} -> {self.to_where}"
+        return self.id
 
 
 class MedicineTransactionDetail(models.Model):
     medicine_transaction = models.ForeignKey(
-        MedicineTransaction, on_delete=models.RESTRICT
+        MedicineTransaction,
+        on_delete=models.RESTRICT,
+        related_name="medicine_transaction_detail",
     )
     medicine = models.ForeignKey(Medicine, on_delete=models.RESTRICT)
     quantity = models.IntegerField()
     expiration_date = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return self.id

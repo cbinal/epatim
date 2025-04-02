@@ -3,8 +3,18 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 
 
-from pharmacy.models import Warehouse, Medicine
-from pharmacy.api.serializers import WarehouseSerializers, MedicineSerializers
+from pharmacy.models import (
+    Warehouse,
+    Medicine,
+    MedicineTransaction,
+    MedicineTransactionDetail,
+)
+from pharmacy.api.serializers import (
+    WarehouseSerializers,
+    MedicineSerializers,
+    MedicineTransactionSerializer,
+    MedicineTransactionDetailSerializer,
+)
 
 
 class WarehouseViewSet(ModelViewSet):
@@ -32,6 +42,25 @@ class MedicineViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["name", "active_ingredient", "barcode", "category"]
+
+    def perform_create(self, serializer):
+        serializer.save(
+            created_by=self.request.user,
+            updated_by=self.request.user,
+        )
+
+    def perform_update(self, serialzer):
+        serialzer.save(
+            updated_by=self.request.user,
+        )
+
+
+class MedicineTransactionViewSet(ModelViewSet):
+    queryset = MedicineTransaction.objects.all()
+    serializer_class = MedicineTransactionSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["date", "transaction_id", "transaction_label"]
 
     def perform_create(self, serializer):
         serializer.save(
