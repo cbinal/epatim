@@ -78,10 +78,7 @@ class Medicine(models.Model):
 
 
 class MedicineTransaction(models.Model):
-    medicine = models.ForeignKey(Medicine, on_delete=models.RESTRICT)
-    quantity = models.IntegerField()
     date = models.DateTimeField(default=now)
-    expiration_date = models.DateField(blank=True, null=True)  # Son kullanma tarihi
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
     transaction_label = models.CharField(max_length=100, blank=True, null=True)
     from_content_type = models.ForeignKey(
@@ -112,3 +109,12 @@ class MedicineTransaction(models.Model):
 
     def __str__(self):
         return f"{self.quantity} adet {self.medicine.name}, {self.from_where} -> {self.to_where}"
+
+
+class MedicineTransactionDetail(models.Model):
+    medicine_transaction = models.ForeignKey(
+        MedicineTransaction, on_delete=models.RESTRICT
+    )
+    medicine = models.ForeignKey(Medicine, on_delete=models.RESTRICT)
+    quantity = models.IntegerField()
+    expiration_date = models.DateField(blank=True, null=True)
