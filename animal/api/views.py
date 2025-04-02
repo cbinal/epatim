@@ -1,9 +1,12 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 
 from collections import defaultdict
+
+from pharmacy.models import Warehouse
 
 from animal.models import (
     Animal,
@@ -92,6 +95,18 @@ class AnimalShelterViewSet(ModelViewSet):
     queryset = AnimalShelter.objects.all()
     serializer_class = AnimalShelterSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        print(self.request.data.get("warehouse"))
+        serializer.save(
+            warehouse=Warehouse.objects.get(id=self.request.data.get("warehouse"))
+        )
+
+    def perform_create(self, serializer):
+        print(self.request.data.get("warehouse"))
+        serializer.save(
+            warehouse=Warehouse.objects.get(id=self.request.data.get("warehouse"))
+        )
 
 
 class AnimalTransactionViewSet(ModelViewSet):

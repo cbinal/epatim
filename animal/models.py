@@ -25,7 +25,11 @@ class AnimalShelter(models.Model):
     location = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     warehouse = models.ForeignKey(
-        Warehouse, blank=True, null=True, on_delete=models.RESTRICT
+        Warehouse,
+        blank=True,
+        null=True,
+        on_delete=models.RESTRICT,
+        related_name="warehouse_for_shelter",
     )
 
     def __str__(self):
@@ -70,8 +74,19 @@ class Animal(models.Model):
 
 class AnimalTransaction(models.Model):
     animal = models.ForeignKey(Animal, on_delete=models.RESTRICT, related_name="animal")
+    from_shelter = models.ForeignKey(
+        AnimalShelter,
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="from_shelter",
+    )
     to_shelter = models.ForeignKey(
-        AnimalShelter, on_delete=models.RESTRICT, related_name="to_shelter"
+        AnimalShelter,
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="to_shelter",
     )
     created_by = models.ForeignKey(
         User, on_delete=models.RESTRICT, related_name="created_animal_transaction_user"

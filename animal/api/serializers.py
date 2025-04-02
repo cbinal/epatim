@@ -8,6 +8,8 @@ from animal.models import (
     AnimalTransaction,
 )
 
+from pharmacy.models import Warehouse
+
 
 class AnimalSerializer(serializers.ModelSerializer):
     species = serializers.SerializerMethodField()

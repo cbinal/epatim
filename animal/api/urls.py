@@ -18,7 +18,7 @@ router.register("animal_species", AnimalSpeciesViewSet)
 router.register(
     "breeds_by_species", AnimalBreedsBySpeciesViewSet, basename="breeds_by_species"
 )
-router.register("animal_shelter", AnimalShelterViewSet)
+router.register("animal_shelter", AnimalShelterViewSet, basename="animal_shelter")
 router.register("animal_transaction", AnimalTransactionViewSet)
 
 
