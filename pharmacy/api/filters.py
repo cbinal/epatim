@@ -1,5 +1,5 @@
 import django_filters
-from pharmacy.models import Supplier
+from pharmacy.models import Supplier, Warehouse
 
 
 class SupplierFilter(django_filters.FilterSet):
@@ -13,3 +13,7 @@ class SupplierFilter(django_filters.FilterSet):
     class Meta:
         model = Supplier
         fields = ["name", "address", "phone", "email", "tax_number", "tax_office"]
+
+
+class WarehouseFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr="icontains")
