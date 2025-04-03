@@ -2,7 +2,6 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 
-
 from pharmacy.models import (
     Warehouse,
     Medicine,
@@ -17,6 +16,7 @@ from pharmacy.api.serializers import (
     MedicineTransactionDetailSerializer,
     SupplierSerializer,
 )
+from pharmacy.api.filter import SupplierFilter
 
 
 class WarehouseViewSet(ModelViewSet):
@@ -81,7 +81,7 @@ class SupplierViewSet(ModelViewSet):
     serializer_class = SupplierSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["name", "address", "phone", "email", "tax_number", "tax_office"]
+    filterset_class = SupplierFilter
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user, updated_by=self.request.user)
