@@ -45,3 +45,10 @@ class MedicineTransactionSerializer(serializers.ModelSerializer):
                 medicine_transaction=medicine_transaction, **detail
             )
         return medicine_transaction
+
+
+class SupplierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Supplier
+        fields = "__all__"
+        read_only_fields = ("created_by", "updated_by")

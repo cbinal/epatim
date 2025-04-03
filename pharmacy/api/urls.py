@@ -5,6 +5,7 @@ from pharmacy.api.views import (
     WarehouseViewSet,
     MedicineViewSet,
     MedicineTransactionViewSet,
+    SupplierViewSet,
 )
 
 
@@ -15,6 +16,8 @@ router.register("medicine", MedicineViewSet, basename="medicine")
 router.register(
     "medicine_transaction", MedicineTransactionViewSet, basename="medicine_transaction"
 )
+router.register("supplier", SupplierViewSet, basename="supplier")
+
 
 urlpatterns = [
     path("", include(router.urls)),
