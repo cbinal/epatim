@@ -1,15 +1,21 @@
 from rest_framework import serializers
+from django.contrib.contenttypes.models import ContentType
 
 
 from pharmacy import models
 
 
 class WarehouseSerializers(serializers.ModelSerializer):
+    content_type = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Warehouse
         fields = "__all__"
         read_only_fields = ("created_by", "updated_by")
+
+    def get_content_type(self, obj):
+        content_type = ContentType.objects.get_for_model(models.Warehouse)
+        return content_type.id
 
 
 class MedicineSerializers(serializers.ModelSerializer):
@@ -48,7 +54,13 @@ class MedicineTransactionSerializer(serializers.ModelSerializer):
 
 
 class SupplierSerializer(serializers.ModelSerializer):
+    content_type = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Supplier
         fields = "__all__"
         read_only_fields = ("created_by", "updated_by")
+
+    def get_content_type(self, obj):
+        content_type = ContentType.objects.get_for_model(models.Supplier)
+        return content_type.id
