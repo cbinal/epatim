@@ -16,7 +16,7 @@ from pharmacy.api.serializers import (
     MedicineTransactionDetailSerializer,
     SupplierSerializer,
 )
-from pharmacy.api.filter import SupplierFilter
+from pharmacy.api.filters import SupplierFilter
 
 
 class WarehouseViewSet(ModelViewSet):

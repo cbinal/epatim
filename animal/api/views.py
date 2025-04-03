@@ -22,6 +22,7 @@ from animal.api.serializers import (
     AnimalShelterSerializer,
     AnimalTransactionSerializer,
 )
+from animal.api.filters import AnimalShelterFilter
 
 
 class AnimalViewSet(ModelViewSet):
@@ -95,6 +96,8 @@ class AnimalShelterViewSet(ModelViewSet):
     queryset = AnimalShelter.objects.all()
     serializer_class = AnimalShelterSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AnimalShelterFilter
 
     def perform_update(self, serializer):
         print(self.request.data.get("warehouse"))
