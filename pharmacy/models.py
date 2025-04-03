@@ -91,7 +91,7 @@ class MedicineTransaction(models.Model):
     )
     to_object_id = models.PositiveIntegerField()
     to_where = GenericForeignKey("to_content_type", "to_object_id")
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     created_by = models.ForeignKey(
         User,
@@ -117,7 +117,11 @@ class MedicineTransactionDetail(models.Model):
         on_delete=models.RESTRICT,
         related_name="medicine_transaction_detail",
     )
-    medicine = models.ForeignKey(Medicine, on_delete=models.RESTRICT)
+    medicine = models.ForeignKey(
+        Medicine,
+        on_delete=models.RESTRICT,
+        related_name=("medicine_transaction_detail"),
+    )
     quantity = models.IntegerField()
     expiration_date = models.DateField(blank=True, null=True)
 
