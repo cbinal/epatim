@@ -16,7 +16,7 @@ from pharmacy.api.serializers import (
     MedicineTransactionDetailSerializer,
     SupplierSerializer,
 )
-from pharmacy.api.filters import SupplierFilter
+from pharmacy.api.filters import SupplierFilter, WarehouseFilter
 
 
 class WarehouseViewSet(ModelViewSet):
@@ -24,7 +24,7 @@ class WarehouseViewSet(ModelViewSet):
     serializer_class = WarehouseSerializers
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["name", "location", "description", "default", "active"]
+    filterset_class = WarehouseFilter
 
     def perform_create(self, serializer):
         serializer.save(
