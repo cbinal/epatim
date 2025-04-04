@@ -34,7 +34,7 @@ class MedicineTransactionDetailSerializer(serializers.ModelSerializer):
 
 
 class MedicineTransactionSerializer(serializers.ModelSerializer):
-    medicine_transaction_detail = MedicineTransactionDetailSerializer(many=True)
+    transaction_detail = MedicineTransactionDetailSerializer(many=True)
 
     class Meta:
         model = models.MedicineTransaction
@@ -42,11 +42,11 @@ class MedicineTransactionSerializer(serializers.ModelSerializer):
         read_only_fields = ("created_by", "updated_by")
 
     def create(self, validated_data):
-        medicine_transaction_detail = validated_data.pop("medicine_transaction_detail")
+        transaction_detail = validated_data.pop("transaction_detail")
         medicine_transaction = models.MedicineTransaction.objects.create(
             **validated_data
         )
-        for detail in medicine_transaction_detail:
+        for detail in transaction_detail:
             models.MedicineTransactionDetail.objects.create(
                 medicine_transaction=medicine_transaction, **detail
             )
@@ -64,3 +64,65 @@ class SupplierSerializer(serializers.ModelSerializer):
     def get_content_type(self, obj):
         content_type = ContentType.objects.get_for_model(models.Supplier)
         return content_type.id
+
+
+class MedicineTransactionDetailVSerializer(serializers.ModelSerializer):
+    medicine_name = serializers.CharField(source="medicine.name")
+    medicine_id = serializers.IntegerField(source="medicine.id")
+
+    class Meta:
+        model = models.MedicineTransactionDetail
+        fields = [
+            "id",
+            "medicine_id",
+            "medicine_name",
+            "quantity",
+            "expiration_date",
+        ]
+
+
+class MedicineTransactionVSerializer(serializers.ModelSerializer):
+    from_where = serializers.SerializerMethodField()
+    to_where = serializers.SerializerMethodField()
+    created_by = serializers.CharField(
+        source="created_by.username"
+    )  # Kullanıcı adını almak için
+    updated_by = serializers.CharField(
+        source="updated_by.username"
+    )  # Kullanıcı adını almak için
+    transaction_detail = MedicineTransactionDetailVSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.MedicineTransaction
+        fields = [
+            "id",
+            "date",
+            "transaction_id",
+            "transaction_label",
+            "from_where",
+            "from_object_id",
+            "to_where",
+            "to_object_id",
+            "description",
+            "created_by",
+            "updated_by",
+            "created_at",
+            "updated_at",
+            "transaction_detail",
+        ]
+
+    def get_from_where(self, obj):
+        """from_where alanını model ismi olarak döndür"""
+        # return ContentType.objects.get_for_model(obj.from_content_type.model).name
+
+        return obj.from_content_type.model if obj.from_content_type else None
+
+    def get_to_where(self, obj):
+        """to_where alanını model ismi olarak döndür"""
+        return obj.to_content_type.model if obj.to_content_type else None
+
+
+class ContentTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContentType
+        fields = ["id", "name"]

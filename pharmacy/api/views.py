@@ -1,6 +1,7 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.contenttypes.models import ContentType
 
 
 from pharmacy.models import (
@@ -16,6 +17,9 @@ from pharmacy.api.serializers import (
     MedicineTransactionSerializer,
     MedicineTransactionDetailSerializer,
     SupplierSerializer,
+    MedicineTransactionVSerializer,
+    MedicineTransactionDetailVSerializer,
+    ContentTypeSerializer,
 )
 from pharmacy.api.filters import SupplierFilter, WarehouseFilter
 
@@ -52,8 +56,8 @@ class MedicineViewSet(ModelViewSet):
             updated_by=self.request.user,
         )
 
-    def perform_update(self, serialzer):
-        serialzer.save(
+    def perform_update(self, serializer):
+        serializer.save(
             updated_by=self.request.user,
         )
 
@@ -89,3 +93,14 @@ class SupplierViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
+
+
+class MedicineTransactionVViewSet(ReadOnlyModelViewSet):
+    queryset = MedicineTransaction.objects.all().prefetch_related("transaction_detail")
+    serializer_class = MedicineTransactionVSerializer
+
+
+class ContentTypeViewSet(ReadOnlyModelViewSet):
+    queryset = ContentType.objects.all()
+    serializer_class = ContentTypeSerializer
+    permission_classes = [IsAuthenticated]

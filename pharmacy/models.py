@@ -115,12 +115,12 @@ class MedicineTransactionDetail(models.Model):
     medicine_transaction = models.ForeignKey(
         MedicineTransaction,
         on_delete=models.RESTRICT,
-        related_name="medicine_transaction_detail",
+        related_name="transaction_detail",
     )
     medicine = models.ForeignKey(
         Medicine,
         on_delete=models.RESTRICT,
-        related_name=("medicine_transaction_detail"),
+        related_name=("medicine"),
     )
     quantity = models.IntegerField()
     expiration_date = models.DateField(blank=True, null=True)

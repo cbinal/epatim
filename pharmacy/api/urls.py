@@ -5,7 +5,9 @@ from pharmacy.api.views import (
     WarehouseViewSet,
     MedicineViewSet,
     MedicineTransactionViewSet,
+    MedicineTransactionVViewSet,
     SupplierViewSet,
+    ContentTypeViewSet,
 )
 
 
@@ -17,7 +19,12 @@ router.register(
     "medicine_transaction", MedicineTransactionViewSet, basename="medicine_transaction"
 )
 router.register("supplier", SupplierViewSet, basename="supplier")
-
+router.register(
+    "medicine_transaction_v",
+    MedicineTransactionVViewSet,
+    basename="medicine_transaction_v",
+)
+router.register("content_type", ContentTypeViewSet, basename="content_type")
 
 urlpatterns = [
     path("", include(router.urls)),
