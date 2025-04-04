@@ -84,6 +84,8 @@ class MedicineTransactionDetailVSerializer(serializers.ModelSerializer):
 class MedicineTransactionVSerializer(serializers.ModelSerializer):
     from_where_name = serializers.SerializerMethodField()
     to_where_name = serializers.SerializerMethodField()
+    from_object_name = serializers.SerializerMethodField()
+    to_object_name = serializers.SerializerMethodField()
     created_by = serializers.CharField(
         source="created_by.username"
     )  # Kullanıcı adını almak için
@@ -102,9 +104,11 @@ class MedicineTransactionVSerializer(serializers.ModelSerializer):
             "from_content_type",
             "from_where_name",
             "from_object_id",
+            "from_object_name",
             "to_content_type",
             "to_where_name",
             "to_object_id",
+            "to_object_name",
             "description",
             "created_by",
             "updated_by",
@@ -138,6 +142,12 @@ class MedicineTransactionVSerializer(serializers.ModelSerializer):
                 translated_table = "Depo"
 
         return translated_table
+
+    def get_to_object_name(self, obj):
+        return str(obj.to_where) if obj.to_where else None
+
+    def get_from_object_name(self, obj):
+        return str(obj.from_where) if obj.from_where else None
 
 
 class ContentTypeSerializer(serializers.ModelSerializer):

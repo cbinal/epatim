@@ -62,6 +62,12 @@ class MedicineViewSet(ModelViewSet):
         )
 
 
+class MedicineTransactionDetailViewSet(ModelViewSet):
+    queryset = MedicineTransactionDetail.objects.all()
+    serializer_class = MedicineTransactionDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+
 class MedicineTransactionViewSet(ModelViewSet):
     queryset = MedicineTransaction.objects.all()
     serializer_class = MedicineTransactionSerializer
