@@ -82,8 +82,8 @@ class MedicineTransactionDetailVSerializer(serializers.ModelSerializer):
 
 
 class MedicineTransactionVSerializer(serializers.ModelSerializer):
-    from_where = serializers.SerializerMethodField()
-    to_where = serializers.SerializerMethodField()
+    from_where_name = serializers.SerializerMethodField()
+    to_where_name = serializers.SerializerMethodField()
     created_by = serializers.CharField(
         source="created_by.username"
     )  # Kullanıcı adını almak için
@@ -99,9 +99,11 @@ class MedicineTransactionVSerializer(serializers.ModelSerializer):
             "date",
             "transaction_id",
             "transaction_label",
-            "from_where",
+            "from_content_type",
+            "from_where_name",
             "from_object_id",
-            "to_where",
+            "to_content_type",
+            "to_where_name",
             "to_object_id",
             "description",
             "created_by",
@@ -111,15 +113,31 @@ class MedicineTransactionVSerializer(serializers.ModelSerializer):
             "transaction_detail",
         ]
 
-    def get_from_where(self, obj):
+    def get_from_where_name(self, obj):
         """from_where alanını model ismi olarak döndür"""
         # return ContentType.objects.get_for_model(obj.from_content_type.model).name
 
-        return obj.from_content_type.model if obj.from_content_type else None
+        table = obj.from_content_type.model if obj.from_content_type else None
+        translated_table = None
+        if table:
+            if table == "supplier":
+                translated_table = "Tedarikçi"
+            elif table == "warehouse":
+                translated_table = "Depo"
 
-    def get_to_where(self, obj):
+        return translated_table
+
+    def get_to_where_name(self, obj):
         """to_where alanını model ismi olarak döndür"""
-        return obj.to_content_type.model if obj.to_content_type else None
+        table = obj.to_content_type.model if obj.to_content_type else None
+        translated_table = None
+        if table:
+            if table == "supplier":
+                translated_table = "Tedarikçi"
+            elif table == "warehouse":
+                translated_table = "Depo"
+
+        return translated_table
 
 
 class ContentTypeSerializer(serializers.ModelSerializer):
