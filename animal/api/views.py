@@ -14,6 +14,8 @@ from animal.models import (
     AnimalSpecies,
     AnimalShelter,
     AnimalTransaction,
+    Medication,
+    Examination,
 )
 from animal.api.serializers import (
     AnimalSerializer,
@@ -21,6 +23,8 @@ from animal.api.serializers import (
     AnimalSpeciesSerializer,
     AnimalShelterSerializer,
     AnimalTransactionSerializer,
+    MedicationSerializer,
+    ExaminationSerializer,
 )
 from animal.api.filters import AnimalShelterFilter
 
@@ -115,4 +119,16 @@ class AnimalShelterViewSet(ModelViewSet):
 class AnimalTransactionViewSet(ModelViewSet):
     queryset = AnimalTransaction.objects.all()
     serializer_class = AnimalTransactionSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class MedicationViewSet(ModelViewSet):
+    queryset = Medication.objects.all()
+    serializer_class = MedicationSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ExaminationViewSet(ModelViewSet):
+    queryset = Examination.objects.all()
+    serializer_class = ExaminationSerializer
     permission_classes = [IsAuthenticated]

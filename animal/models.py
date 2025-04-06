@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 
-from pharmacy.models import Warehouse
+from pharmacy.models import Warehouse, Medicine
 
 
 class AnimalSpecies(models.Model):
@@ -96,3 +96,53 @@ class AnimalTransaction(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
+
+
+class Examination(models.Model):
+    animal = models.ForeignKey(
+        Animal, on_delete=models.RESTRICT, related_name="animal_examination"
+    )
+    examination_date = models.DateTimeField(default=now)
+    findings = models.TextField()
+    weight = models.FloatField()
+    temperature = models.FloatField()
+    heart_rate = models.IntegerField()
+    dehydration = models.BooleanField(default=False)
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_examination_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_examination_user"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
+
+
+class Medication(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    dosage = models.CharField(max_length=50)
+    animal = models.ForeignKey(
+        Animal, on_delete=models.RESTRICT, related_name="animal_medication"
+    )
+    medication_date = models.DateTimeField(default=now)
+    medicine = models.ForeignKey(
+        Medicine, on_delete=models.RESTRICT, related_name="medicine_medication"
+    )
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_medication_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_medication_user"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

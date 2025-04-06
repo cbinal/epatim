@@ -6,6 +6,8 @@ from animal.models import (
     AnimalBreed,
     AnimalShelter,
     AnimalTransaction,
+    Medication,
+    Examination,
 )
 
 from pharmacy.models import Warehouse
@@ -65,3 +67,32 @@ class AnimalTransactionSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = AnimalShelter
 #         fields = "__all__"
+
+
+class MedicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Medication
+        fields = "__all__"
+
+    def perform_create(self, serializer):
+        serializer.save(
+            created_by=self.request.user,
+            updated_by=self.request.user,
+        )
+
+    def perform_update(self, serializer):
+        serializer.save(
+            updated_by=self.request.user,
+        )
+
+
+class ExaminationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Examination
+        fields = "__all__"
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, updated_by=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
