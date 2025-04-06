@@ -126,9 +126,13 @@ class MedicationViewSet(ModelViewSet):
     queryset = Medication.objects.all()
     serializer_class = MedicationSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["animal"]
 
 
 class ExaminationViewSet(ModelViewSet):
     queryset = Examination.objects.all()
     serializer_class = ExaminationSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["animal"]
