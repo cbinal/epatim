@@ -73,26 +73,11 @@ class MedicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medication
         fields = "__all__"
-
-    def perform_create(self, serializer):
-        serializer.save(
-            created_by=self.request.user,
-            updated_by=self.request.user,
-        )
-
-    def perform_update(self, serializer):
-        serializer.save(
-            updated_by=self.request.user,
-        )
+        read_only_fields = ("created_by", "updated_by")
 
 
 class ExaminationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examination
         fields = "__all__"
-
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user, updated_by=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+        read_only_fields = ("created_by", "updated_by")

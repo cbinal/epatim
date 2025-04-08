@@ -129,6 +129,17 @@ class MedicationViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["animal"]
 
+    def perform_create(self, serializer):
+        serializer.save(
+            created_by=self.request.user,
+            updated_by=self.request.user,
+        )
+
+    def perform_update(self, serializer):
+        serializer.save(
+            updated_by=self.request.user,
+        )
+
 
 class ExaminationViewSet(ModelViewSet):
     queryset = Examination.objects.all()
@@ -136,3 +147,14 @@ class ExaminationViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["animal"]
+
+    def perform_create(self, serializer):
+        serializer.save(
+            created_by=self.request.user,
+            updated_by=self.request.user,
+        )
+
+    def perform_update(self, serializer):
+        serializer.save(
+            updated_by=self.request.user,
+        )
