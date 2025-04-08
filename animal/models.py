@@ -153,14 +153,10 @@ class Examination(models.Model):
 class Medication(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    dosage = models.CharField(max_length=50)
     animal = models.ForeignKey(
         Animal, on_delete=models.RESTRICT, related_name="animal_medication"
     )
     medication_date = models.DateTimeField(default=now)
-    medicine = models.ForeignKey(
-        Medicine, on_delete=models.RESTRICT, related_name="medicine_medication"
-    )
     created_by = models.ForeignKey(
         User, on_delete=models.RESTRICT, related_name="created_medication_user"
     )
@@ -177,3 +173,24 @@ class Medication(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MedicationDetail(models.Model):
+    medication = models.ForeignKey(
+        Medication, on_delete=models.CASCADE, related_name="medication_detail"
+    )
+    medicine = models.ForeignKey(
+        Medication, on_delete=models.RESTRICT, related_name="animal_medication_detail"
+    )
+    dosage = models.CharField(max_length=50)
+
+    quantity = models.IntegerField()
+    description = models.TextField()
+
+    class Meta:
+        ordering = ["medication", "id"]
+        verbose_name = "medication detail"
+        verbose_name_plural = "medication details"
+
+    def __str__(self):
+        return self.id
