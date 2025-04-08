@@ -22,6 +22,9 @@ class Warehouse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
@@ -44,6 +47,11 @@ class Supplier(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "supplier"
+        verbose_name_plural = "suppliers"
 
     def __str__(self):
         return self.name
@@ -72,6 +80,11 @@ class Medicine(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "medicine"
+        verbose_name_plural = "medicines"
 
     def __str__(self):
         return self.name
@@ -106,6 +119,11 @@ class MedicineTransaction(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-date"]
+        verbose_name = "medicine transaction"
+        verbose_name_plural = "medicine transactions"
 
     def __str__(self):
         return self.id

@@ -8,6 +8,9 @@ from pharmacy.models import Warehouse, Medicine
 class AnimalSpecies(models.Model):
     name = models.CharField(max_length=50)
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
@@ -15,6 +18,9 @@ class AnimalSpecies(models.Model):
 class AnimalBreed(models.Model):
     name = models.CharField(max_length=50)
     species = models.ForeignKey(AnimalSpecies, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -31,6 +37,11 @@ class AnimalShelter(models.Model):
         on_delete=models.RESTRICT,
         related_name="warehouse_for_shelter",
     )
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "animal shelter"
+        verbose_name_plural = "animal shelters"
 
     def __str__(self):
         return self.name
@@ -68,6 +79,11 @@ class Animal(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["id_number", "arrival_date"]
+        verbose_name = "animal"
+        verbose_name_plural = "animals"
+
     def __str__(self):
         return self.id_number
 
@@ -97,6 +113,11 @@ class AnimalTransaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "animal transaction"
+        verbose_name_plural = "animal transactions"
+
     def __str__(self):
         return self.id
 
@@ -119,6 +140,11 @@ class Examination(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-examination_date", "animal"]
+        verbose_name = "examination"
+        verbose_name_plural = "examinations"
 
     def __str__(self):
         return self.id
@@ -143,6 +169,11 @@ class Medication(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-medication_date", "name"]
+        verbose_name = "medication"
+        verbose_name_plural = "medications"
 
     def __str__(self):
         return self.name
