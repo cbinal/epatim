@@ -7,6 +7,7 @@ from animal.models import (
     AnimalShelter,
     AnimalTransaction,
     Medication,
+    MedicationDetail,
     Examination,
 )
 
@@ -69,11 +70,26 @@ class AnimalTransactionSerializer(serializers.ModelSerializer):
 #         fields = "__all__"
 
 
+class MedicationDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MedicationDetail
+        exclude = ["medication"]
+
+
 class MedicationSerializer(serializers.ModelSerializer):
+    medication_detail = MedicationDetailSerializer(many=True)
+
     class Meta:
         model = Medication
         fields = "__all__"
         read_only_fields = ("created_by", "updated_by")
+
+    def create(self, validated_data):
+        medication_detail = validated_data.pop("medication_detail")
+        medication = Medication.objects.create(**validated_data)
+        for detail in medication_detail:
+            MedicationDetail.objects.create(medication=medication, **detail)
+        return medication
 
 
 class ExaminationSerializer(serializers.ModelSerializer):
