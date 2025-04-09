@@ -180,7 +180,7 @@ class MedicationDetail(models.Model):
         Medication, on_delete=models.CASCADE, related_name="medication_detail"
     )
     medicine = models.ForeignKey(
-        Medication, on_delete=models.RESTRICT, related_name="animal_medication_detail"
+        Medicine, on_delete=models.RESTRICT, related_name="animal_medication_detail"
     )
     dosage = models.CharField(max_length=50)
 

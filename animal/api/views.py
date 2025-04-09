@@ -138,6 +138,7 @@ class MedicationViewSet(ModelViewSet):
     filterset_fields = ["animal"]
 
     def perform_create(self, serializer):
+        print("view create")
         serializer.save(
             created_by=self.request.user,
             updated_by=self.request.user,

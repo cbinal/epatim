@@ -11,7 +11,7 @@ from animal.models import (
     Examination,
 )
 
-from pharmacy.models import Warehouse
+from pharmacy.models import Warehouse, Medicine
 
 
 class AnimalSerializer(serializers.ModelSerializer):
@@ -62,14 +62,6 @@ class AnimalTransactionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# class AnimalShelterListSerializer(serializers.ModelSerializer):
-#     animal = AnimalSerializer()
-
-#     class Meta:
-#         model = AnimalShelter
-#         fields = "__all__"
-
-
 class MedicationDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicationDetail
@@ -85,6 +77,7 @@ class MedicationSerializer(serializers.ModelSerializer):
         read_only_fields = ("created_by", "updated_by")
 
     def create(self, validated_data):
+        print("burada")
         medication_detail = validated_data.pop("medication_detail")
         medication = Medication.objects.create(**validated_data)
         for detail in medication_detail:
