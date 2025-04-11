@@ -9,6 +9,8 @@ from animal.api.views import (
     AnimalShelterViewSet,
     AnimalTransactionViewSet,
     MedicationViewSet,
+    MedicationDetailViewSet,
+    OnlyMedicationDetailViewSet,
     ExaminationViewSet,
 )
 
@@ -23,6 +25,9 @@ router.register(
 router.register("animal_shelter", AnimalShelterViewSet, basename="animal_shelter")
 router.register("animal_transaction", AnimalTransactionViewSet)
 router.register("medication", MedicationViewSet, basename="medication")
+router.register(
+    "medication_detail", OnlyMedicationDetailViewSet, basename="medication_detail"
+)
 router.register("examination", ExaminationViewSet, basename="examination")
 
 

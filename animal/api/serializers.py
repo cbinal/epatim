@@ -62,10 +62,23 @@ class AnimalTransactionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class OnlyMedicationDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MedicationDetail
+        fields = "__all__"
+        read_only_fields = ("created_by", "updated_by")
+
+
 class MedicationDetailSerializer(serializers.ModelSerializer):
+    medicine_name = serializers.SerializerMethodField()
+
     class Meta:
         model = MedicationDetail
         exclude = ["medication"]
+        read_only_fields = ("created_by", "updated_by")
+
+    def get_medicine_name(self, obj):
+        return obj.medicine.name if obj.medicine else None
 
 
 class MedicationSerializer(serializers.ModelSerializer):
@@ -78,10 +91,16 @@ class MedicationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print("burada")
+
         medication_detail = validated_data.pop("medication_detail")
         medication = Medication.objects.create(**validated_data)
         for detail in medication_detail:
-            MedicationDetail.objects.create(medication=medication, **detail)
+            MedicationDetail.objects.create(
+                medication=medication,
+                created_by=self.context["request"].user,
+                updated_by=self.context["request"].user,
+                **detail
+            )
         return medication
 
 

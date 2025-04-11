@@ -26,6 +26,7 @@ from animal.api.serializers import (
     AnimalTransactionSerializer,
     MedicationSerializer,
     MedicationDetailSerializer,
+    OnlyMedicationDetailSerializer,
     ExaminationSerializer,
 )
 from animal.api.filters import AnimalShelterFilter
@@ -124,6 +125,23 @@ class AnimalTransactionViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
+class OnlyMedicationDetailViewSet(ModelViewSet):
+    queryset = MedicationDetail.objects.all()
+    serializer_class = OnlyMedicationDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(
+            created_by=self.request.user,
+            updated_by=self.request.user,
+        )
+
+    def perform_update(self, serializer):
+        serializer.save(
+            updated_by=self.request.user,
+        )
+
+
 class MedicationDetailViewSet(ModelViewSet):
     queryset = MedicationDetail.objects.all()
     serializer_class = MedicationDetailSerializer
@@ -149,7 +167,6 @@ class MedicationViewSet(ModelViewSet):
     filterset_fields = ["animal"]
 
     def perform_create(self, serializer):
-        print("view create")
         serializer.save(
             created_by=self.request.user,
             updated_by=self.request.user,
