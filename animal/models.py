@@ -187,6 +187,15 @@ class MedicationDetail(models.Model):
     quantity = models.IntegerField()
     description = models.TextField()
 
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="created_medication_detail_user"
+    )
+    updated_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name="updated_medication_detail_user"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
         ordering = ["medication", "id"]
         verbose_name = "medication detail"
